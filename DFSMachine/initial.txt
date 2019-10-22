@@ -1,0 +1,3 @@
+﻿start=q0
+sigma=a;b;c
+end=q1;

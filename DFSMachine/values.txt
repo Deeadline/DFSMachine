@@ -1,0 +1,4 @@
+﻿initial=q0
+sigma=a;b;c
+final=q1
+abc
