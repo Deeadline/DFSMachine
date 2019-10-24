@@ -18,22 +18,25 @@ namespace DFSMachine
                 Console.WriteLine(e);
                 throw;
             }
-
-            Console.WriteLine("Hello World!");
         }
 
-        static void ReadMachineFromFile()
+        private static void ReadMachineFromFile()
         {
             var q = new List<string>();
             var sigma = new List<char>();
             var delta = new List<Transition>();
             var q0 = string.Empty;
             var f = new List<string>();
-            using (var file = new StreamReader("transition.txt"))
+            var currentDirectory = Environment.CurrentDirectory.Substring(0,
+                Environment.CurrentDirectory.IndexOf("bin", StringComparison.Ordinal));
+            var transitionPath = currentDirectory + "transition.txt";
+            var initialPath = currentDirectory + "initial.txt";
+            var valuesPath = currentDirectory + "values.txt";
+            using (var file = new StreamReader(transitionPath))
             {
                 string[] lines;
                 string line;
-                using var secondFile = new StreamReader("initial.txt");
+                using var secondFile = new StreamReader(initialPath);
                 while ((line = secondFile.ReadLine()) != null)
                 {
                     if (line.Contains("start"))
@@ -59,13 +62,19 @@ namespace DFSMachine
                         throw new ArgumentException("Line is not valid.");
                     }
 
+                    if (!q.Contains(lines[0]))
+                    {
+                        q.Add(lines[0]);
+                    }
+
                     delta.Add(new Transition(lines[0], lines[1].ElementAt(0), lines[2]));
                 }
             }
 
+
             var dfs = new DeterministicFiniteStateMachine(q, sigma, delta, q0, f);
 
-            using (var file = new StreamReader("values.txt"))
+            using (var file = new StreamReader(valuesPath))
             {
                 string line;
                 while ((line = file.ReadLine()) != null)

@@ -1,3 +1,8 @@
 ﻿start=q0
 sigma=a;b;c
-end=q1;
+end=q4;q5;q6
+
+------
+start=q0
+sigma=a;b
+end=q4

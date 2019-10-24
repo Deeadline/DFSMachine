@@ -1,4 +1,23 @@
-﻿initial=q0
-sigma=a;b;c
-final=q1
+﻿L=pierwszy i ostatni symbol są różne
 abc
+aabb
+ababbca
+bccbab
+bccbaba
+cba
+ababbc
+bba
+
+
+-----------------
+L=((a+b)*(a+b)a(a+b)*b)
+aabbab
+ababaabbb
+aab
+babaabbab
+babbab
+aab
+bab
+aaa
+bbbb
+bbabab

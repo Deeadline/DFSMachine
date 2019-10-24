@@ -15,12 +15,15 @@ namespace DFSMachine
         public DeterministicFiniteStateMachine(
             List<string> q,
             List<char> sigma,
-            List<Transition> delta,
+            IEnumerable<Transition> delta,
             string q0,
-            List<string> f)
+            IEnumerable<string> f)
         {
-            Q = q;
-            Sigma = sigma;
+            if (delta == null) throw new ArgumentNullException(nameof(delta));
+            if (q0 == null) throw new ArgumentNullException(nameof(q0));
+            if (f == null) throw new ArgumentNullException(nameof(f));
+            Q = q ?? throw new ArgumentNullException(nameof(q));
+            Sigma = sigma ?? throw new ArgumentNullException(nameof(sigma));
             AddTransition(delta);
             AddInitialState(q0);
             AddFinalStates(f);
@@ -28,10 +31,10 @@ namespace DFSMachine
 
         public void Accepts(string input)
         {
-            string currentState = Q0;
-            foreach (char symbol in input)
+            var currentState = Q0;
+            foreach (var transition in input.Select(symbol =>
+                Delta.Find(t => t.StartState == currentState && t.Symbol == symbol)))
             {
-                Transition transition = Delta.Find(t => t.StartState == currentState && t.Symbol == symbol);
                 if (transition is null)
                 {
                     return;
@@ -45,9 +48,9 @@ namespace DFSMachine
                 : $"Stopped in state {currentState} which is not a final state.");
         }
 
-        private void AddTransition(List<Transition> transitions)
+        private void AddTransition(IEnumerable<Transition> transitions)
         {
-            foreach (Transition transition in transitions.Where(ValidTransition))
+            foreach (var transition in transitions.Where(ValidTransition))
             {
                 Delta.Add(transition);
             }
